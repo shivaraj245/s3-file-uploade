@@ -1,0 +1,321 @@
+# ===============================================
+# S3 File Uploader - .gitignore
+# ===============================================
+
+# Environment Variables & Secrets
+# ===============================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging
+.env.backup
+
+# AWS Credentials & Configuration
+# ===============================================
+.aws/
+aws-credentials.json
+.aws-sam/
+credentials.json
+config.json
+
+# Node.js Dependencies
+# ===============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Package Manager Lock Files (optional - uncomment if needed)
+# ===============================================
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Runtime & Process Files
+# ===============================================
+pids
+*.pid
+*.seed
+*.pid.lock
+.pm2/
+
+# Logs & Debug Files
+# ===============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+debug.log
+error.log
+access.log
+
+# Test Coverage & Results
+# ===============================================
+coverage/
+*.lcov
+.nyc_output
+test-results/
+.jest/
+junit.xml
+
+# Build Outputs & Distribution
+# ===============================================
+build/
+dist/
+out/
+public/build/
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist/
+
+# Temporary & Cache Files
+# ===============================================
+tmp/
+temp/
+.tmp/
+.temp/
+*.tmp
+*.temp
+.cache
+.eslintcache
+.stylelintcache
+
+# IDE & Editor Files
+# ===============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Operating System Files
+# ===============================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+Icon?
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Application Specific Files
+# ===============================================
+
+# Uploaded Files (if storing locally for development)
+uploads/
+public/uploads/
+static/uploads/
+files/
+media/
+
+# Database Files
+# ===============================================
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+database.json
+local-database/
+
+# SSL Certificates & Keys
+# ===============================================
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+ssl/
+certs/
+
+# Docker & Container Files
+# ===============================================
+.dockerignore
+Dockerfile.dev
+docker-compose.override.yml
+.docker/
+
+# Serverless Framework
+# ===============================================
+.serverless/
+.webpack/
+serverless-state.json
+
+# Terraform
+# ===============================================
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Analytics & Monitoring
+# ===============================================
+.vercel
+.netlify/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Backup Files
+# ===============================================
+*.backup
+*.bak
+*.old
+*.orig
+backup/
+backups/
+
+# Documentation Build
+# ===============================================
+docs/_build/
+docs/build/
+site/
+
+# Dependency Directories (alternative package managers)
+# ===============================================
+jspm_packages/
+web_modules/
+.pnp/
+.pnp.js
+
+# Optional npm cache directory
+# ===============================================
+.npm
+
+# Optional eslint cache
+# ===============================================
+.eslintcache
+
+# Microbundle cache
+# ===============================================
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+# ===============================================
+.node_repl_history
+
+# Output of 'npm pack'
+# ===============================================
+*.tgz
+
+# Yarn Integrity file
+# ===============================================
+.yarn-integrity
+
+# Stores VSCode versions used for testing VSCode extensions
+# ===============================================
+.vscode-test
+
+# FuseBox cache
+# ===============================================
+.fusebox/
+
+# DynamoDB Local files
+# ===============================================
+.dynamodb/
+
+# TernJS port file
+# ===============================================
+.tern-port
+
+# Local Development Files
+# ===============================================
+.local
+local.json
+local-config.json
+dev-config.json
+
+# Miscellaneous
+# ===============================================
+*.tsbuildinfo
+.grunt
+bower_components
+.lock-wscript
+build/Release
+.nyc_output
+lib-cov
+.coverage
+.grunt
+.lock-wscript
+
+# Project Specific Ignores
+# ===============================================
+# Add any project-specific files to ignore here
+# Example: custom-config.json
+
+# Security Scan Results
+# ===============================================
+.snyk
+security-report.json
+
+# Performance & Profiling
+# ===============================================
+*.cpuprofile
+*.heapprofile
+.clinic/
+
+# End of .gitignore

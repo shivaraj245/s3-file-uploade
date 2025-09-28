@@ -4,19 +4,46 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="index.css">
-
-  <title>Document</title>
+  <title>File Uploader</title>
 </head>
 <body>
-  
-  <form id="imageForm">
-    <input id="imageInput" type="file" accept="image/*">
-    <button type="submit">Upload</button>
-  </form>
+  <div class="container">
+    <div class="upload-card">
+      <h1>📁  File Uploader</h1>
+      <p class="subtitle">Upload your files directly to Amazon S3</p>
+      
+      <form id="imageForm" class="upload-form">
+        <div class="file-input-wrapper">
+          <input id="imageInput" type="file" accept="image/*,video/*,.pdf,.doc,.docx,.txt" hidden>
+          <div id="dropZone" class="drop-zone">
+            <div class="drop-content">
+              <span class="upload-icon">📤</span>
+              <p>Drag & drop files here or <span class="browse-text">browse</span></p>
+              <small>Max size: 10MB | Supported: Images, Videos, PDF, Documents</small>
+            </div>
+          </div>
+        </div>
+        
+        <div id="fileInfo" class="file-info hidden"></div>
+        
+        <button type="submit" id="uploadBtn" class="upload-btn" disabled>
+          <span class="btn-text">Upload File</span>
+          <span class="loader hidden"></span>
+        </button>
+      </form>
+
+      <div id="uploadProgress" class="progress-container hidden">
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <p class="progress-text">Uploading...</p>
+      </div>
+
+      <div id="uploadResults" class="results-container"></div>
+    </div>
+  </div>
 
   <script src="index.js"></script>
-
 </body>
 </html>
