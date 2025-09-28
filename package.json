@@ -1,0 +1,16 @@
+{
+  "name": "s3-file-uploader",
+  "version": "1.0.0",
+  "description": "Modern drag-and-drop file uploader for AWS S3",
+  "scripts": {
+    "build": "cd back && npm install",
+    "start": "cd back && npm start",
+    "dev": "cd back && npm run dev"
+  },
+  "keywords": ["s3", "upload", "aws", "file-uploader"],
+  "author": "Shivaraj",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.x"
+  }
+}
