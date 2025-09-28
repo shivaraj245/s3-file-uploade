@@ -5,7 +5,7 @@
 
 A modern, responsive drag-and-drop file uploader that uploads directly to Amazon S3 with secure pre-signed URLs. No server storage needed - files go straight to the cloud!
 
-![Demo Screenshot](https://via.placeholder.com/600x300?text=Drag+%26+Drop+File+Uploader) <!-- Replace with actual screenshot -->
+![S3 File Uploader Demo](./screenshot.png)
 
 ## ✨ Features
 
