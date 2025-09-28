@@ -19,6 +19,11 @@ const ALLOWED_TYPES = {
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Word Document'
 };
 
+// Update line 17 with your actual backend URL
+const API_BASE_URL = window.location.hostname.includes('vercel.app') 
+  ? 'https://s3-file-uploade.vercel.app' // ← Your actual backend URL
+  : 'http://localhost:8080';
+
 let selectedFile = null;
 
 // Event listeners
@@ -177,8 +182,8 @@ imageForm.addEventListener("submit", async (event) => {
   const stopProgress = showProgress();
 
   try {
-    // Get S3 URL from server
-    const response = await fetch('http://localhost:8080/s3Url');
+    // Get S3 URL from server - use dynamic URL instead of localhost
+    const response = await fetch(`${API_BASE_URL}/s3Url`);
     if (!response.ok) throw new Error(`Server error: ${response.status}`);
     
     const { url } = await response.json();
