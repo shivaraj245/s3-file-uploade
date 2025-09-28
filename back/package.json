@@ -7,11 +7,15 @@
     "express": "^4.17.1"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo 'Build complete'"
   },
   "name": "back",
   "version": "1.0.0",
   "main": "server.js",
+  "engines": {
+    "node": "18.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
