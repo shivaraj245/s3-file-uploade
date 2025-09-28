@@ -19,10 +19,8 @@ const ALLOWED_TYPES = {
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Word Document'
 };
 
-// Update line 17 with your actual backend URL
-const API_BASE_URL = window.location.hostname.includes('vercel.app') 
-  ? 'https://s3-file-uploade.vercel.app' // ← Your actual backend URL
-  : 'http://localhost:8080';
+// Use only Render backend URL
+const API_BASE_URL = 'https://s3-file-uploade.onrender.com';
 
 let selectedFile = null;
 
@@ -62,16 +60,16 @@ function handleFileSelection(file) {
 
 function validateFile(file) {
   if (file.size > MAX_FILE_SIZE) {
-    return {
-      valid: false,
-      error: `File size exceeds ${formatFileSize(MAX_FILE_SIZE)} limit`
+    return { 
+      valid: false, 
+      error: `File size must be less than ${formatFileSize(MAX_FILE_SIZE)}` 
     };
   }
 
   if (!ALLOWED_TYPES[file.type]) {
-    return {
-      valid: false,
-      error: `Unsupported file type. Only images, text, documents, and PDFs are allowed.`
+    return { 
+      valid: false, 
+      error: 'File type not supported. Please select an image, PDF, text, or Word document.' 
     };
   }
 
@@ -115,54 +113,73 @@ function showProgress() {
   
   let progress = 0;
   const interval = setInterval(() => {
-    progress += 10;
+    progress += Math.random() * 15;
     if (progress > 90) progress = 90;
+    
     progressFill.style.width = progress + '%';
-    progressText.textContent = `Uploading... ${progress}%`;
+    progressText.textContent = Math.round(progress) + '%';
   }, 100);
   
   return () => {
     clearInterval(interval);
     progressFill.style.width = '100%';
-    progressText.textContent = 'Complete!';
-    setTimeout(() => uploadProgress.classList.add('hidden'), 800);
+    progressText.textContent = '100%';
+    setTimeout(() => uploadProgress.classList.add('hidden'), 1000);
   };
 }
 
 function addUploadResult(file, fileUrl, success = true, error = null) {
   const resultDiv = document.createElement('div');
-  resultDiv.className = `result-item ${success ? 'success' : 'error'}`;
+  resultDiv.className = `upload-result ${success ? 'success' : 'error'}`;
   
   if (success) {
-    const isImage = file.type.startsWith('image/');
-    
     resultDiv.innerHTML = `
-      <h4>✅ ${file.name}</h4>
-      <p><strong>Size:</strong> ${formatFileSize(file.size)} | <strong>Uploaded:</strong> ${new Date().toLocaleTimeString()}</p>
-      <a href="${fileUrl}" target="_blank" class="file-link">🔗 Open File</a>
-      <button class="copy-btn" onclick="copyLink('${fileUrl}')">📋 Copy</button>
-      ${isImage ? `<img src="${fileUrl}" alt="${file.name}" class="file-preview">` : ''}
+      <div class="result-header">
+        <span class="result-icon">✅</span>
+        <span class="result-title">Upload Successful</span>
+      </div>
+      <div class="result-content">
+        <p><strong>File:</strong> ${file.name}</p>
+        <p><strong>Size:</strong> ${formatFileSize(file.size)}</p>
+        <div class="url-container">
+          <input type="text" value="${fileUrl}" readonly class="url-input">
+          <button onclick="copyLink('${fileUrl}')" class="copy-btn">Copy Link</button>
+        </div>
+      </div>
     `;
   } else {
     resultDiv.innerHTML = `
-      <h4>❌ Upload Failed</h4>
-      <p>${file.name}: ${error}</p>
+      <div class="result-header">
+        <span class="result-icon">❌</span>
+        <span class="result-title">Upload Failed</span>
+      </div>
+      <div class="result-content">
+        <p><strong>File:</strong> ${file.name}</p>
+        <p><strong>Error:</strong> ${error}</p>
+      </div>
     `;
   }
   
-  uploadResults.insertBefore(resultDiv, uploadResults.firstChild);
+  uploadResults.appendChild(resultDiv);
+  uploadResults.scrollTop = uploadResults.scrollHeight;
 }
 
 function copyLink(url) {
   navigator.clipboard.writeText(url).then(() => {
-    const btn = event.target;
-    const originalText = btn.textContent;
-    btn.textContent = '✓ Copied!';
-    setTimeout(() => btn.textContent = originalText, 1500);
+    // Show temporary feedback
+    const button = event.target;
+    const originalText = button.textContent;
+    button.textContent = 'Copied!';
+    button.style.backgroundColor = '#4CAF50';
+    
+    setTimeout(() => {
+      button.textContent = originalText;
+      button.style.backgroundColor = '';
+    }, 2000);
   });
 }
 
-// Main upload handler
+// Main upload handler - updated to use only Render URL
 imageForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   
@@ -182,11 +199,22 @@ imageForm.addEventListener("submit", async (event) => {
   const stopProgress = showProgress();
 
   try {
-    // Get S3 URL from server - use dynamic URL instead of localhost
-    const response = await fetch(`${API_BASE_URL}/s3Url`);
-    if (!response.ok) throw new Error(`Server error: ${response.status}`);
+    // Get S3 URL from Render backend
+    console.log('Fetching from:', `${API_BASE_URL}/s3Url`);
+    const response = await fetch(`${API_BASE_URL}/s3Url`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Server error: ${response.status} - ${errorText}`);
+    }
     
     const { url } = await response.json();
+    console.log('Got presigned URL:', url);
 
     // Upload to S3
     const uploadResponse = await fetch(url, {
@@ -195,9 +223,12 @@ imageForm.addEventListener("submit", async (event) => {
       body: selectedFile
     });
 
-    if (!uploadResponse.ok) throw new Error(`Upload failed: ${uploadResponse.status}`);
+    if (!uploadResponse.ok) {
+      throw new Error(`Upload failed: ${uploadResponse.status} - ${uploadResponse.statusText}`);
+    }
 
     const fileUrl = url.split('?')[0];
+    console.log('File uploaded successfully:', fileUrl);
     addUploadResult(selectedFile, fileUrl, true);
     resetForm();
 
@@ -217,6 +248,10 @@ function resetForm() {
   imageInput.value = '';
   fileInfo.classList.add('hidden');
   uploadBtn.disabled = true;
+  
+  // Remove any error messages
+  const errorMessage = document.querySelector('.error-message');
+  if (errorMessage) errorMessage.remove();
 }
 
 // Global function for copy button
